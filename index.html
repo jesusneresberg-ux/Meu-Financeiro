@@ -2,296 +2,71 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#111827" />
-  <title>MeuFinanceiro</title>
-  <link rel="manifest" href="manifest.json">
-  <style>
-    :root{
-      --bg:#f3f4f6;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;
-      --positive:#059669;--negative:#dc2626;--accent:#111827;--soft:#f9fafb;
-      --radius:18px;--shadow:0 10px 28px rgba(17,24,39,.08);
-    }
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
-    button,input,select{font:inherit} button{cursor:pointer}
-    .app{max-width:1180px;margin:auto;min-height:100vh;padding-bottom:92px}
-    header{position:sticky;top:0;z-index:5;background:rgba(243,244,246,.94);backdrop-filter:blur(14px);padding:18px 16px 10px}
-    .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .brand{font-weight:800;font-size:1.25rem}.subtitle{font-size:.82rem;color:var(--muted);margin-top:2px}
-    .iconbtn,.primary,.ghost,.chip{border:0;border-radius:14px;padding:11px 14px}
-    .iconbtn{background:var(--card);box-shadow:var(--shadow)} .primary{background:var(--accent);color:#fff;font-weight:700}
-    .ghost{background:var(--card);border:1px solid var(--line)}
-    main{padding:10px 16px 24px}
-    .filters{display:flex;gap:8px;overflow:auto;padding:4px 0 12px}
-    .chip{white-space:nowrap;background:#e5e7eb;color:#374151}.chip.active{background:#111827;color:#fff}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
-    .kpi small{color:var(--muted)} .kpi strong{display:block;font-size:1.55rem;margin-top:8px}
-    .positive{color:var(--positive)} .negative{color:var(--negative)}
-    .section-title{display:flex;justify-content:space-between;align-items:center;margin:20px 2px 10px}
-    .section-title h2{font-size:1rem;margin:0}.section-title span{font-size:.82rem;color:var(--muted)}
-    .chart{height:190px;display:flex;align-items:end;gap:10px;padding:12px 4px 2px}
-    .bar-wrap{flex:1;text-align:center}.bar{width:100%;border-radius:10px 10px 4px 4px;background:#111827;min-height:8px}
-    .bar.expense{background:#d1d5db}.bar-label{font-size:.72rem;color:var(--muted);margin-top:6px}
-    .list{display:flex;flex-direction:column;gap:10px}
-    .txn{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:15px}
-    .txn-icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--soft);font-size:1.2rem}
-    .txn b{display:block;font-size:.94rem}.txn small{color:var(--muted)}
-    .txn-value{text-align:right;font-weight:800}.empty{text-align:center;color:var(--muted);padding:28px 10px}
-    .search{display:flex;gap:8px}.search input{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px}
-    nav{position:fixed;z-index:6;left:50%;transform:translateX(-50%);bottom:12px;width:min(94%,720px);background:#111827;border-radius:22px;display:grid;grid-template-columns:repeat(4,1fr);padding:8px;box-shadow:0 12px 30px rgba(0,0,0,.2)}
-    nav button{border:0;background:transparent;color:#d1d5db;padding:10px 6px;border-radius:15px;font-size:.75rem}
-    nav button.active{background:#fff;color:#111827;font-weight:800}
-    .fab{position:fixed;right:18px;bottom:92px;width:58px;height:58px;border-radius:50%;border:0;background:#111827;color:#fff;font-size:2rem;box-shadow:0 10px 24px rgba(17,24,39,.3)}
-    .view{display:none}.view.active{display:block}
-    .modal{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.42);display:none;align-items:end;justify-content:center}
-    .modal.open{display:flex}.sheet{width:min(100%,620px);max-height:92vh;overflow:auto;background:#fff;border-radius:26px 26px 0 0;padding:20px}
-    .sheet-head{display:flex;justify-content:space-between;align-items:center}.sheet h3{margin:0}
-    .form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.field{display:flex;flex-direction:column;gap:6px}
-    .field.full{grid-column:1/-1}.field label{font-size:.78rem;color:var(--muted)}
-    .field input,.field select{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
-    .actions{display:flex;gap:8px;margin-top:16px}.actions button{flex:1}
-    .simple-list{display:flex;flex-direction:column;gap:9px}.row{display:flex;justify-content:space-between;align-items:center;padding:13px;border:1px solid var(--line);border-radius:14px;background:#fff}
-    .row .meta{font-size:.8rem;color:var(--muted)}
-    .danger{color:var(--negative);border:0;background:transparent}
-    @media(max-width:740px){.grid{grid-template-columns:1fr}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.chart{height:150px}.fab{bottom:88px}}
-  </style>
+  <title>GranaZap</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div class="app">
-<header>
-  <div class="top">
-    <div><div class="brand">MeuFinanceiro</div><div class="subtitle" id="periodLabel">Controle financeiro pessoal</div></div>
-    <button class="iconbtn" onclick="exportData()">⇩ Backup</button>
-  </div>
-</header>
-
-<main>
-<section id="dashboard" class="view active">
-  <div class="filters">
-    <button class="chip active" data-period="month">Este mês</button>
-    <button class="chip" data-period="today">Hoje</button>
-    <button class="chip" data-period="7d">7 dias</button>
-    <button class="chip" data-period="year">Este ano</button>
-    <button class="chip" data-period="all">Tudo</button>
-  </div>
-
-  <div class="grid">
-    <div class="card kpi"><small>Saldo</small><strong id="balance">R$ 0,00</strong></div>
-    <div class="card kpi"><small>Receitas</small><strong class="positive" id="income">R$ 0,00</strong></div>
-    <div class="card kpi"><small>Despesas</small><strong class="negative" id="expense">R$ 0,00</strong></div>
-  </div>
-
-  <div class="section-title"><h2>Movimento dos últimos meses</h2><span>Receita x despesa</span></div>
-  <div class="card"><div class="chart" id="chart"></div></div>
-
-  <div class="section-title"><h2>Últimos lançamentos</h2><span id="txnCount">0 registros</span></div>
-  <div class="card"><div class="list" id="recentList"></div></div>
-</section>
-
-<section id="transactions" class="view">
-  <div class="section-title"><h2>Lançamentos</h2><span id="allCount"></span></div>
-  <div class="search">
-    <input id="searchInput" placeholder="Pesquisar descrição ou valor..." oninput="renderTransactions()">
-    <select id="typeFilter" onchange="renderTransactions()" class="ghost">
-      <option value="all">Todos</option><option value="income">Receitas</option><option value="expense">Despesas</option>
-    </select>
-  </div>
-  <div class="card" style="margin-top:12px"><div class="list" id="allList"></div></div>
-</section>
-
-<section id="accounts" class="view">
-  <div class="section-title"><h2>Contas</h2><button class="ghost" onclick="openAccountModal()">+ Conta</button></div>
-  <div class="simple-list" id="accountList"></div>
-</section>
-
-<section id="settings" class="view">
-  <div class="section-title"><h2>Configurações</h2><span>Uso particular</span></div>
-  <div class="card">
-    <div class="simple-list">
-      <div class="row"><div><b>Categorias</b><div class="meta">Gerencie suas categorias de receitas e despesas.</div></div><button class="ghost" onclick="openCategoryModal()">Abrir</button></div>
-      <div class="row"><div><b>Exportar backup</b><div class="meta">Baixe todos os dados em JSON.</div></div><button class="ghost" onclick="exportData()">Exportar</button></div>
-      <div class="row"><div><b>Importar backup</b><div class="meta">Restaure um arquivo JSON deste aplicativo.</div></div><label class="ghost" style="cursor:pointer">Importar<input type="file" accept=".json" onchange="importData(event)" hidden></label></div>
-      <div class="row"><div><b>Limpar dados</b><div class="meta">Remove todos os dados salvos neste navegador.</div></div><button class="danger" onclick="clearData()">Limpar</button></div>
+  <header class="topbar">
+    <div>
+      <h1>GranaZap</h1>
+      <p>Finanças pessoais com lançamentos inteligentes</p>
     </div>
-  </div>
-</section>
-</main>
-</div>
+    <button id="themeBtn" class="ghost">Tema</button>
+  </header>
 
-<button class="fab" onclick="openTxnModal()">+</button>
+  <main class="container">
+    <section class="cards">
+      <article class="card"><span>Saldo</span><strong id="saldo">R$ 0,00</strong></article>
+      <article class="card"><span>Entradas</span><strong id="entradas">R$ 0,00</strong></article>
+      <article class="card"><span>Saídas</span><strong id="saidas">R$ 0,00</strong></article>
+      <article class="card"><span>Lançamentos</span><strong id="qtd">0</strong></article>
+    </section>
 
-<nav>
-  <button class="active" data-view="dashboard">⌂<br>Início</button>
-  <button data-view="transactions">☷<br>Lançamentos</button>
-  <button data-view="accounts">▣<br>Contas</button>
-  <button data-view="settings">⚙<br>Ajustes</button>
-</nav>
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Novo lançamento</h2>
+          <p>Cadastre manualmente ou simule dados extraídos de um comprovante.</p>
+        </div>
+      </div>
+      <form id="formLancamento" class="grid-form">
+        <label>Data<input id="data" type="date" required /></label>
+        <label>Descrição<input id="descricao" placeholder="Ex.: RJOTA COMERCIO E SERVICOS" required /></label>
+        <label>Valor<input id="valor" inputmode="decimal" placeholder="500,00" required /></label>
+        <label>Tipo<select id="tipo"><option value="saida">Saída</option><option value="entrada">Entrada</option></select></label>
+        <label>Categoria<input id="categoria" placeholder="Comércio" /></label>
+        <label>Forma<select id="forma"><option>Pix</option><option>Cartão</option><option>Dinheiro</option><option>Transferência</option><option>Outro</option></select></label>
+        <label class="wide">CNPJ/CPF relacionado<input id="documento" placeholder="Opcional" /></label>
+        <div class="wide actions"><button type="submit">Salvar lançamento</button><button type="button" id="demoBtn" class="secondary">Usar exemplo RJOTA</button></div>
+      </form>
+    </section>
 
-<div class="modal" id="txnModal">
-  <div class="sheet">
-    <div class="sheet-head"><h3>Novo lançamento</h3><button class="iconbtn" onclick="closeModal('txnModal')">✕</button></div>
-    <div class="form">
-      <div class="field"><label>Tipo</label><select id="txnType"><option value="expense">Despesa</option><option value="income">Receita</option></select></div>
-      <div class="field"><label>Valor</label><input id="txnValue" type="number" inputmode="decimal" step="0.01" placeholder="0,00"></div>
-      <div class="field full"><label>Descrição</label><input id="txnDesc" placeholder="Ex.: Supermercado"></div>
-      <div class="field"><label>Categoria</label><select id="txnCategory"></select></div>
-      <div class="field"><label>Conta</label><select id="txnAccount"></select></div>
-      <div class="field"><label>Data</label><input id="txnDate" type="date"></div>
-      <div class="field"><label>Recorrência</label><select id="txnRecurring"><option value="none">Não</option><option value="monthly">Mensal</option></select></div>
-      <div class="field full"><label>Observação</label><input id="txnNote" placeholder="Opcional"></div>
-    </div>
-    <div class="actions"><button class="ghost" onclick="closeModal('txnModal')">Cancelar</button><button class="primary" onclick="saveTransaction()">Salvar</button></div>
-  </div>
-</div>
+    <section class="panel">
+      <div class="panel-head">
+        <div><h2>Lançamentos</h2><p>Classificação automática baseada nas regras aprendidas.</p></div>
+        <input id="busca" class="search" placeholder="Pesquisar" />
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th>Forma</th><th>Valor</th><th></th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
 
-<div class="modal" id="accountModal">
-  <div class="sheet">
-    <div class="sheet-head"><h3>Nova conta</h3><button class="iconbtn" onclick="closeModal('accountModal')">✕</button></div>
-    <div class="form">
-      <div class="field full"><label>Nome</label><input id="accountName" placeholder="Ex.: Nubank"></div>
-      <div class="field"><label>Tipo</label><select id="accountType"><option>Conta corrente</option><option>Dinheiro</option><option>Cartão</option><option>Investimento</option></select></div>
-      <div class="field"><label>Saldo inicial</label><input id="accountBalance" type="number" step="0.01" value="0"></div>
-    </div>
-    <div class="actions"><button class="ghost" onclick="closeModal('accountModal')">Cancelar</button><button class="primary" onclick="saveAccount()">Salvar</button></div>
-  </div>
-</div>
+    <section class="panel">
+      <div class="panel-head"><div><h2>Regras aprendidas</h2><p>Ao reconhecer um estabelecimento ou documento, o app aplica a categoria automaticamente.</p></div></div>
+      <div id="regras" class="rules"></div>
+    </section>
 
-<div class="modal" id="categoryModal">
-  <div class="sheet">
-    <div class="sheet-head"><h3>Categorias</h3><button class="iconbtn" onclick="closeModal('categoryModal')">✕</button></div>
-    <div class="form">
-      <div class="field"><label>Nome</label><input id="categoryName" placeholder="Ex.: Educação"></div>
-      <div class="field"><label>Tipo</label><select id="categoryType"><option value="expense">Despesa</option><option value="income">Receita</option></select></div>
-    </div>
-    <div class="actions"><button class="primary" onclick="saveCategory()">Adicionar categoria</button></div>
-    <div class="simple-list" id="categoryList" style="margin-top:14px"></div>
-  </div>
-</div>
+    <section class="panel info">
+      <h2>WhatsApp + Firebase</h2>
+      <p>Para produção, o WhatsApp Cloud API deve chamar uma Firebase Function. A função recebe a mensagem/comprovante, extrai os dados, aplica as regras de categoria e grava no Firestore. Tokens e segredos ficam no backend, nunca no GitHub Pages.</p>
+    </section>
+  </main>
 
-<script>
-const KEY='meufinanceiro_v1';
-const seed={
-  accounts:[{id:'a1',name:'Carteira',type:'Dinheiro',initial:0},{id:'a2',name:'Conta principal',type:'Conta corrente',initial:0}],
-  categories:[
-    {id:'c1',name:'Alimentação',type:'expense',icon:'🍽️'},
-    {id:'c2',name:'Combustível',type:'expense',icon:'⛽'},
-    {id:'c3',name:'Casa',type:'expense',icon:'🏠'},
-    {id:'c4',name:'Saúde',type:'expense',icon:'🩺'},
-    {id:'c5',name:'Lazer',type:'expense',icon:'🎬'},
-    {id:'c6',name:'Salário',type:'income',icon:'💼'},
-    {id:'c7',name:'Outras receitas',type:'income',icon:'💰'}],
-  txns:[]
-};
-let db=load();
-let period='month';
-function load(){try{return JSON.parse(localStorage.getItem(KEY))||structuredClone(seed)}catch{return structuredClone(seed)}}
-function persist(){localStorage.setItem(KEY,JSON.stringify(db))}
-const money=v=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0);
-const fmtDate=s=>new Date(s+'T12:00:00').toLocaleDateString('pt-BR');
-const today=()=>new Date().toISOString().slice(0,10);
-function uid(){return Math.random().toString(36).slice(2)+Date.now().toString(36)}
-function periodStart(p){
-  const d=new Date(), x=new Date(d);
-  if(p==='today') return new Date(d.getFullYear(),d.getMonth(),d.getDate());
-  if(p==='7d'){x.setDate(d.getDate()-6);return new Date(x.getFullYear(),x.getMonth(),x.getDate())}
-  if(p==='month') return new Date(d.getFullYear(),d.getMonth(),1);
-  if(p==='year') return new Date(d.getFullYear(),0,1);
-  return new Date(1970,0,1);
-}
-function filtered(){
-  const s=periodStart(period); const e=new Date(); e.setHours(23,59,59,999);
-  return db.txns.filter(t=>{const d=new Date(t.date+'T12:00:00');return d>=s&&d<=e})
-}
-function totals(list){
-  let inc=0,exp=0;
-  list.forEach(t=>t.type==='income'?inc+=+t.value:exp+=+t.value);
-  const initial=db.accounts.reduce((a,b)=>a+(+b.initial||0),0);
-  return {inc,exp,bal:initial+inc-exp}
-}
-function renderDashboard(){
-  const list=filtered(), t=totals(list);
-  balance.textContent=money(t.bal); income.textContent=money(t.inc); expense.textContent=money(t.exp);
-  txnCount.textContent=`${list.length} registros`;
-  recentList.innerHTML=list.sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6).map(txnHTML).join('')||'<div class="empty">Nenhum lançamento neste período.</div>';
-  renderChart();
-}
-function txnHTML(t){
-  const c=db.categories.find(x=>x.id===t.categoryId)||{name:'Sem categoria',icon:'•'};
-  const a=db.accounts.find(x=>x.id===t.accountId)||{name:'Sem conta'};
-  return `<div class="txn"><div class="txn-icon">${c.icon||'•'}</div><div><b>${escapeHtml(t.desc)}</b><small>${c.name} • ${a.name} • ${fmtDate(t.date)}</small></div><div class="txn-value ${t.type==='income'?'positive':'negative'}">${t.type==='income'?'+':'-'} ${money(t.value)}</div></div>`
-}
-function renderTransactions(){
-  const q=(searchInput?.value||'').toLowerCase(), type=typeFilter?.value||'all';
-  let list=[...db.txns].sort((a,b)=>b.date.localeCompare(a.date));
-  list=list.filter(t=>(type==='all'||t.type===type)&&(!q||t.desc.toLowerCase().includes(q)||String(t.value).includes(q)));
-  allCount.textContent=`${list.length} registros`; allList.innerHTML=list.map(txnHTML).join('')||'<div class="empty">Nenhum lançamento encontrado.</div>';
-}
-function renderChart(){
-  const now=new Date(), months=[];
-  for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1); months.push({y:d.getFullYear(),m:d.getMonth(),label:d.toLocaleDateString('pt-BR',{month:'short'})})}
-  const data=months.map(m=>{
-    const tx=db.txns.filter(t=>{const d=new Date(t.date+'T12:00:00');return d.getFullYear()===m.y&&d.getMonth()===m.m});
-    return {...m,...totals(tx)}
-  });
-  const max=Math.max(1,...data.flatMap(x=>[x.inc,x.exp]));
-  chart.innerHTML=data.map(x=>`<div class="bar-wrap"><div style="display:flex;align-items:end;gap:3px;height:135px"><div class="bar" title="Receitas ${money(x.inc)}" style="height:${Math.max(5,x.inc/max*100)}%"></div><div class="bar expense" title="Despesas ${money(x.exp)}" style="height:${Math.max(5,x.exp/max*100)}%"></div></div><div class="bar-label">${x.label}</div></div>`).join('');
-}
-function renderAccounts(){
-  accountList.innerHTML=db.accounts.map(a=>{
-    const tx=db.txns.filter(t=>t.accountId===a.id); const t=totals(tx); const saldo=(+a.initial||0)+t.inc-t.exp;
-    return `<div class="row"><div><b>${escapeHtml(a.name)}</b><div class="meta">${a.type}</div></div><b>${money(saldo)}</b></div>`
-  }).join('');
-}
-function renderCategories(){
-  categoryList.innerHTML=db.categories.map(c=>`<div class="row"><div><b>${c.icon||'•'} ${escapeHtml(c.name)}</b><div class="meta">${c.type==='income'?'Receita':'Despesa'}</div></div><button class="danger" onclick="deleteCategory('${c.id}')">Excluir</button></div>`).join('');
-}
-function populateSelects(){
-  txnCategory.innerHTML=db.categories.map(c=>`<option value="${c.id}">${c.icon||'•'} ${c.name}</option>`).join('');
-  txnAccount.innerHTML=db.accounts.map(a=>`<option value="${a.id}">${a.name}</option>`).join('');
-}
-function openTxnModal(){populateSelects();txnDate.value=today();txnModal.classList.add('open')}
-function openAccountModal(){accountModal.classList.add('open')}
-function openCategoryModal(){renderCategories();categoryModal.classList.add('open')}
-function closeModal(id){document.getElementById(id).classList.remove('open')}
-function saveTransaction(){
-  const value=+txnValue.value, desc=txnDesc.value.trim();
-  if(!value||!desc){alert('Informe descrição e valor.');return}
-  db.txns.push({id:uid(),type:txnType.value,value,desc,categoryId:txnCategory.value,accountId:txnAccount.value,date:txnDate.value||today(),recurring:txnRecurring.value,note:txnNote.value.trim()});
-  persist(); closeModal('txnModal'); txnValue.value=''; txnDesc.value=''; txnNote.value=''; renderAll();
-}
-function saveAccount(){
-  const name=accountName.value.trim(); if(!name){alert('Informe o nome da conta.');return}
-  db.accounts.push({id:uid(),name,type:accountType.value,initial:+accountBalance.value||0});persist();closeModal('accountModal');accountName.value='';accountBalance.value='0';renderAll();
-}
-function saveCategory(){
-  const name=categoryName.value.trim(); if(!name)return;
-  db.categories.push({id:uid(),name,type:categoryType.value,icon:categoryType.value==='income'?'💰':'📌'});persist();categoryName.value='';renderCategories();populateSelects();
-}
-function deleteCategory(id){
-  if(db.txns.some(t=>t.categoryId===id)){alert('Esta categoria já possui lançamentos e não pode ser excluída.');return}
-  db.categories=db.categories.filter(c=>c.id!==id);persist();renderCategories();
-}
-function exportData(){
-  const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');
-  a.href=url;a.download=`meufinanceiro-backup-${today()}.json`;a.click();URL.revokeObjectURL(url);
-}
-function importData(ev){
-  const f=ev.target.files[0]; if(!f)return; const r=new FileReader();
-  r.onload=()=>{try{db=JSON.parse(r.result);persist();renderAll();alert('Backup importado com sucesso.')}catch{alert('Arquivo inválido.')}};r.readAsText(f);
-}
-function clearData(){if(confirm('Apagar todos os dados deste navegador?')){db=structuredClone(seed);persist();renderAll()}}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function renderAll(){renderDashboard();renderTransactions();renderAccounts();populateSelects()}
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(b.dataset.view).classList.add('active');
-});
-document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');period=b.dataset.period;renderDashboard();
-});
-if('serviceWorker'in navigator){navigator.serviceWorker.register('service-worker.js').catch(()=>{})}
-renderAll();
-</script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
