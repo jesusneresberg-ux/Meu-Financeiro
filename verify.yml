@@ -1,0 +1,20 @@
+name: Verificar CrediGestor
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --package-lock=false playwright@1.62.1
+      - run: npx playwright install --with-deps chromium --only-shell
+      - run: node tests/charge-search.cjs
+      - run: node tests/requirements.cjs
+      - run: node tests/partial-payments.cjs
+      - run: node tests/firebase-partial-payments.cjs
+      - run: node tests/payment-history.cjs
+      - run: node tests/loan-statements-startup.cjs

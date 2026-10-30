@@ -1,0 +1,32 @@
+name: Publicar no Firebase
+# Publica firebase-hosting/ em https://credigestor-testes.web.app/ (endereço aberto pelo APK)
+# quando a pasta muda no main. Requer o secret FIREBASE_SERVICE_ACCOUNT_CREDIGESTOR_TESTES.
+on:
+  push:
+    branches: [main]
+    paths: ['firebase-hosting/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: firebase-deploy
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --package-lock=false playwright@1.62.1
+      - run: npx playwright install --with-deps chromium --only-shell
+      - run: node tests/firebase-partial-payments.cjs
+      - run: node tests/loan-statements-startup.cjs
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CREDIGESTOR_TESTES }}
+          projectId: credigestor-testes
+          entryPoint: firebase-hosting
+          channelId: live
